@@ -6,8 +6,9 @@ variable called "DEVELOPMENT" to be "True".
 """
 import os
 
-from flask_todo import db, create_app
-from flask_todo.models import UserModel, TaskModel
+from flask_todo import create_app, db
+from flask_todo.models.task import TaskModel
+from flask_todo.models.user import UserModel
 
 app = create_app('development')
 
