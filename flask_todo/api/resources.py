@@ -23,7 +23,6 @@ class User(Resource):
     def post(self, username):
         parser = reqparse.RequestParser()
         parser.add_argument('email', required=True, help="This field cannot be blank!")
-        parser.add_argument('username', required=True, help="This field cannot be blank!")
         parser.add_argument('password', required=True, help="This field cannot be blank!")
         data = parser.parse_args()
         if UserModel.find_by_username(username):
