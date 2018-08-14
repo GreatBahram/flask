@@ -9,6 +9,7 @@ class Config:
     DEBUG = False
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_AUTH_URL_RULE = "/login"
 
 
 class DevelopmentConfig(Config):
