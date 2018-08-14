@@ -3,7 +3,7 @@ from flask_jwt import jwt_required
 from flask_restful import Api
 
 from . import api
-from flask_todo.api.resources import UsersList, User
+from flask_todo.resources import UsersList, User
 
 rest_api = Api(api)
 
