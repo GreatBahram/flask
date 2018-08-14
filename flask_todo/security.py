@@ -1,4 +1,4 @@
-from flask_todo.models import UserModel
+from flask_todo.models.user import UserModel
 
 def authenticate(username, password):
     user = UserModel.find_by_username(username)

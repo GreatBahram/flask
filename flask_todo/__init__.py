@@ -15,7 +15,8 @@ def create_app(config_name):
     app.config.from_object(app_config[config_name])
 
 
-    from flask_todo.models import UserModel, TaskModel
+    from flask_todo.models.user import UserModel
+    from flask_todo.models.task import TaskModel
     from flask_todo.security import authenticate, identity
 
     jwt = JWT(app, authenticate, identity)
