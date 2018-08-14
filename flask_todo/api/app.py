@@ -9,14 +9,6 @@ import os
 from passlib.hash import pbkdf2_sha256 as hasher
 
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '')
-auth = HTTPTokenAuth(scheme='Token')
-db = SQLAlchemy(app)
-
-
-from models import Task, Profile
-
 INCOMING_DATE_FMT = '%d/%m/%Y %H:%M:%S'
 
 
@@ -60,61 +52,6 @@ def authenticate(response, profile):
     return response
 
 
-@app.route('/api/v1/accounts', methods=['POST'])
-def register():
-    """Add a new user profile if it doesn't already exist."""
-    needed = ['username', 'email', 'password', 'password2']
-    if all([key in request.form for key in needed]):
-        username = request.form['username']
-        profile = get_profile(username)
-        if not profile:
-            if request.form['password'] == request.form['password2']:
-                new_profile = Profile(
-                    username=username,
-                    email=request.form['email'],
-                    password=hasher.hash(request.form['password']),
-                )
-                db.session.add(new_profile)
-                db.session.commit()
-
-                response = Response(
-                    response=json.dumps({"msg": 'Profile created'}),
-                    status=201,
-                    mimetype="application/json"
-                )
-                return authenticate(response, new_profile)
-
-            response = jsonify({"error": "Passwords don't match"})
-            response.status_code = 400
-            return response
-
-        response = jsonify({'error': f'Username "{username}" is already taken'})
-        response.status_code = 400
-        return response
-
-    response = jsonify({'error': 'Some fields are missing'})
-    response.status_code = 400
-    return response
-
-
-@app.route('/api/v1/accounts/login', methods=['POST'])
-def login():
-    """Authenticate a user."""
-    needed = ['username', 'password']
-    if all([key in request.forms for key in needed]):
-        profile = get_profile(request.forms['username'])
-        if profile and hasher.verify(request.forms['password'], profile.password):
-            response = Response(
-                response=json.dumps({'msg': 'Authenticated'}),
-                mimetype="application/json",
-                status=200
-            )
-            return authenticate(response, profile)
-        response.status_code = 400
-        return {'error': 'Incorrect username/password combination.'}
-    response.status_code = 400
-    return {'error': 'Some fields are missing'}
-
 
 @app.route('/api/v1/accounts/logout', methods=["GET"])
 def logout():
@@ -122,18 +59,6 @@ def logout():
     return jsonify({'msg': 'Logged out.'})
 
 
-@app.route('/api/v1/accounts/<username>', methods=["GET"])
-@auth.login_required
-def profile_detail(username):
-    """Get the detail for an individual profile."""
-    profile = get_profile(username)
-    if profile:
-        response = Response(
-            mimetype="application/json",
-            response=json.dumps(profile.to_dict()),
-        )
-        return authenticate(response, profile)
-    return notfound_response()
 
 
 @app.route('/api/v1/accounts/<username>/tasks', methods=['GET'])
