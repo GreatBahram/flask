@@ -15,7 +15,7 @@ auth = HTTPTokenAuth(scheme='Token')
 db = SQLAlchemy(app)
 
 
-from .models import Task, Profile
+from models import Task, Profile
 
 INCOMING_DATE_FMT = '%d/%m/%Y %H:%M:%S'
 

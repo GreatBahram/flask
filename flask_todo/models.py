@@ -1,20 +1,22 @@
-from .app import db
 from datetime import datetime
-import secrets
 
+# local imports
+from flask_todo import db
 
 DATE_FMT = '%d/%m/%Y %H:%M:%S'
 
 
-class Task(db.Model):
+class TaskModel(db.Model):
+    __tablename__ = 'tasks'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Unicode, nullable=False)
     note = db.Column(db.Unicode)
     creation_date = db.Column(db.DateTime, nullable=False)
     due_date = db.Column(db.DateTime)
     completed = db.Column(db.Boolean, default=False)
-    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), nullable=False)
-    profile = db.relationship("Profile", back_populates='tasks')
+    #user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    #user = db.relationship("UserModel", back_populates='tasks')
 
     def to_dict(self):
         return {
@@ -28,22 +30,24 @@ class Task(db.Model):
         }
 
     def __repr__(self):
-        return "<Task: {} | owner: {}>".format(self.name, self.profile.username)
+        return f"<Task: {self.name}>"
 
 
-class Profile(db.Model):
+class UserModel(db.Model):
+    __tablename__ = 'users'
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Unicode, nullable=False)
     email = db.Column(db.Unicode, nullable=False)
     password = db.Column(db.Unicode, nullable=False)
     date_joined = db.Column(db.DateTime, nullable=False)
-    token = db.Column(db.Unicode, nullable=False)
-    tasks = db.relationship("Task", back_populates='profile', lazy=True)
+    #tasks = db.relationship("TaskModel", back_populates='users', lazy=True)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = password
         self.date_joined = datetime.now()
-        self.token = secrets.token_urlsafe(64)
 
     def to_dict(self):
         """Get the object's properties as a dictionary."""
@@ -53,8 +57,8 @@ class Profile(db.Model):
             "username": self.username,
             "email": self.email,
             "date_joined": self.date_joined.strftime(DATE_FMT),
-            "tasks": [task.to_dict() for task in self.tasks]
+            #"tasks": [task.to_dict() for task in self.tasks],
         }
 
     def __repr__(self):
-        return "<Profile: {} | tasks: {}>".format(self.username, len(self.tasks))
+        return f"<User: {self.username}>"
