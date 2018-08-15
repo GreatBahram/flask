@@ -1,10 +1,11 @@
 # third-party imports
+from flask_jwt import current_identity, jwt_required
 from flask_restful import Resource, reqparse
-from flask_jwt import jwt_required, current_identity
+from sqlalchemy.exc import IntegrityError
 
-from flask_todo.models.user import UserModel
-from flask_todo.models.task import TaskModel
 from flask_todo import db
+from flask_todo.models.task import TaskModel
+from flask_todo.models.user import UserModel
 
 
 class User(Resource):
@@ -49,12 +50,15 @@ class UserRegisteration(Resource):
         parser.add_argument('email', required=True, help="This field cannot be blank!")
         parser.add_argument('password', required=True, help="This field cannot be blank!")
         data = parser.parse_args()
-        if UserModel.find_by_username(username):
-            return {'error': f'Username {username} is already taken'}, 400
 
         user = UserModel(username, data['email'], data['password'])
-        user.save_to_db()
-        return user.to_dict(), 201
+        try:
+            user.save_to_db()
+            return user.to_dict(), 201
+        except IntegrityError:
+            db.session.rollback()
+            return {'error': f'Username {username} is already taken'}, 400
+
 
 
 class UsersList(Resource):
