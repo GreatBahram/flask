@@ -30,6 +30,10 @@ class TaskModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
     @classmethod
     def find_by_id(cls, task_id):
         return cls.query.filter_by(id=task_id).first()

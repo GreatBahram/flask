@@ -48,12 +48,9 @@ class Task(Resource):
 
     def delete(self, task_id):
         """."""
-        task = TaskModel.query.filter_by(id=task_id)
+        task = TaskModel.query.filter_by(id=task_id).first()
         if task:
-            print(task)
-        #if task:
-        #    task.delete()
-        #    db.session.commit()
-        #    return {'message': f'Task {task_id} has been deleted.'}, 201
+            task.delete_from_db()
+            return {'message': f'Task {task_id} has been deleted.'}, 201
         return {'message': 'Task not found'}, 404
         
