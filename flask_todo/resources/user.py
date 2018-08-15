@@ -18,7 +18,7 @@ class User(Resource):
             return user.to_dict()
         return {"message": "User not found"}
 
-    @jwt_required
+    @jwt_required()
     def put(self):
         """Add a new user profile if it doesn't already exist."""
         username = current_identity.username
@@ -26,6 +26,7 @@ class User(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('username', required=True, help="This field cannot be blank!")
         parser.add_argument('email', required=True, help="This field cannot be blank!")
+        data = parser.parse_args()
         user = UserModel.find_by_username(username)
         if user:
             if not UserModel.find_by_username(data['username']):
