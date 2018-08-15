@@ -38,9 +38,9 @@ class User(Resource):
     @jwt_required()
     def delete(self):
         """Delete current username"""
-        username = current_identity.username
-        user = UserModel.delete_by_username(current_identity.username)
-        pass
+        username = current_identity
+        user = username.delete_from_db()
+        return {"message": "Your username has been deleted."}
 
 
 class UserRegisteration(Resource):

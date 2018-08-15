@@ -14,7 +14,7 @@ class UserModel(db.Model):
     email = db.Column(db.String(60), nullable=False)
     password_hash = db.Column(db.String(60), nullable=False)
     date_joined = db.Column(db.DateTime, nullable=False)
-    tasks = db.relationship("TaskModel", backref='user')
+    tasks = db.relationship("TaskModel", backref='user',  cascade="all")
 
     def __init__(self, username, email, password):
         self.username = username
@@ -48,6 +48,10 @@ class UserModel(db.Model):
 
     def save_to_db(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
         db.session.commit()
 
     @classmethod
