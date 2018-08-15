@@ -14,7 +14,7 @@ class UserModel(db.Model):
     email = db.Column(db.String(60), nullable=False)
     password_hash = db.Column(db.String(60), nullable=False)
     date_joined = db.Column(db.DateTime, nullable=False)
-    tasks = db.relationship("TaskModel", backref='user',  cascade="all")
+    tasks = db.relationship("TaskModel", backref='user',  cascade="all", lazy='dynamic')
 
     def __init__(self, username, email, password):
         self.username = username
@@ -43,7 +43,7 @@ class UserModel(db.Model):
             "username": self.username,
             "email": self.email,
             "date_joined": self.date_joined.strftime(DATE_FMT),
-            "tasks": [task.to_dict() for task in self.tasks],
+            "tasks": [task.to_dict() for task in self.tasks.all()],
         }
 
     def save_to_db(self):
