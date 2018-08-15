@@ -2,9 +2,10 @@ from flask import jsonify
 from flask_jwt import jwt_required
 from flask_restful import Api
 
+from flask_todo.resources.task import Task, TaskList, CreateTask
+from flask_todo.resources.user import User, UserRegisteration, UsersList
 
 from . import api
-from flask_todo.resources import User, UserRegisteration, UsersList
 
 rest_api = Api(api)
 
@@ -29,6 +30,15 @@ def index():
     response = jsonify(output)
     return response
 
-rest_api.add_resource(User, '/account')
+@api.route('/api/v1/account/logout', methods=["GET"])
+def logout():
+    """Log a user out."""
+    return jsonify({'msg': 'Logged out.'})
+
 rest_api.add_resource(UsersList, '/accounts')
 rest_api.add_resource(UserRegisteration, '/account/<string:username>')
+rest_api.add_resource(User, '/account')
+
+rest_api.add_resource(TaskList, '/tasks')
+rest_api.add_resource(CreateTask, '/task')
+rest_api.add_resource(Task, '/task/<int:task_id>')

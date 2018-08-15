@@ -16,12 +16,6 @@ class TaskModel(db.Model):
     completed = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    def __init__(self, username, email, password):
-        self.name = name
-        self.note = note
-        self.password = password
-        self.creation_date = datetime.now()
-
     def to_dict(self):
         return {
             'id': self.id,
@@ -30,13 +24,15 @@ class TaskModel(db.Model):
             'creation_date': self.creation_date.strftime(DATE_FMT),
             'due_date': self.due_date.strftime(DATE_FMT) if self.due_date else None,
             'completed': self.completed,
-            'profile_id': self.profile_id
         }
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
+    @classmethod
+    def find_by_id(cls, task_id):
+        return cls.query.filter_by(id=task_id).first()
+
     def __repr__(self):
         return f"<Task: {self.name}>"
-

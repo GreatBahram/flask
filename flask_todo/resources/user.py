@@ -1,14 +1,13 @@
 # third-party imports
-from flask import jsonify
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required, current_identity
 
 from flask_todo.models.user import UserModel
+from flask_todo.models.task import TaskModel
 from flask_todo import db
 
 
 class User(Resource):
-
     @jwt_required()
     def get(cls):
         """Get the detail for an individual profile."""

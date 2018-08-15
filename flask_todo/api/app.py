@@ -52,15 +52,6 @@ def authenticate(response, profile):
     return response
 
 
-
-@app.route('/api/v1/accounts/logout', methods=["GET"])
-def logout():
-    """Log a user out."""
-    return jsonify({'msg': 'Logged out.'})
-
-
-
-
 @app.route('/api/v1/accounts/<username>/tasks', methods=['GET'])
 @auth.login_required
 def task_list(username):
