@@ -14,18 +14,18 @@ rest_api = Api(api)
 def index():
     """List of routes for this API."""
     output = {
-        'info': 'GET /api/v1',
-        'register': 'POST /api/v1/account/<username>',
-        'single profile detail': 'GET /api/v1/account',
-        'edit profile': 'PUT /api/v1/account',
-        'delete profile': 'DELETE /api/v1/account',
-        'login and get JSON Web Token': 'POST /api/v1/login',
-        'logout': 'GET /api/v1/account/logout',
-        "get user's tasks": 'GET /api/v1/account/<username>/tasks',
-        "create task": 'POST /api/v1/account/<username>/task',
-        "task detail": 'GET /api/v1/account/<username>/task/<id>',
-        "task update": 'PUT /api/v1/account/<username>/task/<id>',
-        "delete task": 'DELETE /api/v1/account/<username>/task/<id>'
+        'Info': 'GET /api/v1',
+        'Register': 'POST /api/v1/account/<username>',
+        'Get profile detail': 'GET /api/v1/account',
+        'Edit profile': 'PUT /api/v1/account',
+        'Delete profile': 'DELETE /api/v1/account',
+        'Login and get JSON Web Token': 'POST /api/v1/login',
+        'Logout': 'GET /api/v1/account/logout',
+        "Get user's tasks": 'GET /api/v1/tasks',
+        "Create task": 'POST /api/v1/task',
+        "Get task detail": 'GET /api/v1/task/<id>',
+        "update task ": 'PUT /api/v1/task/<id>',
+        "delete task": 'DELETE /api/v1/task/<id>'
     }
     response = jsonify(output)
     return response
