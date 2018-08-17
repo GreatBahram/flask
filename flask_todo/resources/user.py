@@ -3,6 +3,7 @@ from flask_jwt import current_identity, jwt_required
 from flask_restful import Resource, reqparse
 from sqlalchemy.exc import IntegrityError
 
+# local imports
 from flask_todo import db
 from flask_todo.models.task import TaskModel
 from flask_todo.models.user import UserModel
@@ -59,7 +60,6 @@ class UserRegisteration(Resource):
         except IntegrityError:
             db.session.rollback()
             return {'error': f'Username {username} is already taken'}, 400
-
 
 
 class UsersList(Resource):

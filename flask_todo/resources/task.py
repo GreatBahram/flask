@@ -2,6 +2,7 @@
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required, current_identity
 
+# local imports
 from flask_todo.models.user import UserModel
 from flask_todo.models.task import TaskModel
 from flask_todo import db

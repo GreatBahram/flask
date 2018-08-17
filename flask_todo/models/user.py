@@ -65,9 +65,11 @@ class UserModel(db.Model):
     @classmethod
     def return_all(cls):
         def to_dict(user):
-            return {'username': user.username,
-                    'email': user.email,}
-        return {'users': list(map(lambda x: to_dict(x), UserModel.query.all()))}
+            return {
+                    'username': user.username,
+                    'email': user.email,
+                    }
+        return {'users': list(map(lambda x: to_dict(x), cls.query.all()))}
 
     def __repr__(self):
         return f"<User: {self.username}>"

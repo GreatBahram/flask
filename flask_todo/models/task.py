@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask_todo import db, bcrypt
+from flask_todo import db
 
 DATE_FMT = '%d/%m/%Y %H:%M:%S'
 
