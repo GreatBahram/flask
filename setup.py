@@ -4,9 +4,8 @@ from setuptools import setup, find_packages
 requires = [
     'flask',
     'flask-sqlalchemy',
-    'flask-httpauth',
-    'psycopg2',
-    'passlib'
+    'flask-jwt',
+    'flask-bcrypt',
 ]
 
 tests_require = [
@@ -27,8 +26,8 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
     ],
-    author='Nicholas Hunt-Walker',
-    author_email='nhuntwalker@gmail.com',
+    author='Bahram AGhaei',
+    author_email='aghaee.bahram@gmail.com',
     url='',
     keywords='web flask',
     packages=find_packages(),
