@@ -4,7 +4,7 @@
 
 **Python Versions**: 3.6+ only
 
-** Extensions that has been used**:
+**Extensions that has been used**:
 * Flask-Restful
 * Flask-JWT
 * Flask-SQLAlchemy
